@@ -9,6 +9,7 @@
 #include "physics/physics.h"
 #include "media_manager/media_manager.h"
 #include "particle/particle.h"
+#include "gui/gui.h"
 
 enum DRAW_TYPE {
     DRAW_RECT,
@@ -57,10 +58,14 @@ public:
     // particle
     Particle* NewParticle(Texture* texture);
 
+    // gui
+    Button* ButtonNew(void (*act)(), std::string val, unsigned ft_size, int x, int y, int w = 0, int h = 0);
+
 private:
     Render render;
     Time time;
     Physics physics;
+    GUI gui;
 
     Color clear_color;
     std::vector<Particle*> particles;

@@ -37,6 +37,7 @@ public:
     // text
     void InitText(std::string file);
     void Print(std::string text, int x, int y, int size = 64);
+    TTF_Font* Font() {return font;};
 
 private:
     // rendering
