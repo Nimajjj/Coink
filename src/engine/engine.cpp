@@ -12,6 +12,7 @@ Engine::Engine(std::string wname, int w, int h, int fps) :
 {
     render.InitText("../ressource/font/NotoSans-Regular.ttf");
     MediaManager::Init();
+    gui = GUI();
 }
 
 Engine::~Engine() {
@@ -19,6 +20,7 @@ Engine::~Engine() {
 }
 
 void Engine::Close() {
+    gui.Close();
     render.Close();
     MediaManager::Close();
 }
@@ -28,6 +30,7 @@ void Engine::LoopBegin() {
     time.Update();
     physics.Update(time);
     MediaManager::UpdateAnimation(GetTime());
+    gui.UpdateButtons();
 }
 
 void Engine::LoopEnd() {
@@ -41,6 +44,8 @@ void Engine::RenderBegin() {
     for (auto particle : particles) {
         particle->Update(render.Renderer());
     }
+
+    gui.Display(&render);
 }
 
 void Engine::RenderEnd() {
@@ -135,6 +140,7 @@ double Engine::GetTime() {
     return time.Now();
 }
 
+
 // particles
 
 Particle* Engine::NewParticle(Texture* texture) {
@@ -142,3 +148,21 @@ Particle* Engine::NewParticle(Texture* texture) {
     return particles.back();
 }
 
+
+// gui
+Button* Engine::ButtonNew(void (*act)(), std::string val, unsigned ft_size, int x, int y, int w, int h) {  // move delta calculation here
+    int width = w;
+    int height = h;
+    if (w == 0 || h == 0) {
+        SDL_Surface* surface = TTF_RenderText_Solid(render.Font(), val.c_str(), {255,255,255});
+        double delta = ft_size / 64.0;
+        if (w == 0) {
+            width = surface->w * delta + ft_size;
+        }
+        if (h == 0) {
+            height = surface->h * delta;
+        }
+        SDL_FreeSurface(surface);
+    }
+    return gui.ButtonNew(act, val, ft_size, x, y ,width, height);
+}
