@@ -14,6 +14,7 @@ file(GLOB_RECURSE SOURCES
         ${PROJECT_SOURCE_DIR}/src/*.cpp
         )
 
+
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)

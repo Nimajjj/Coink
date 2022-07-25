@@ -8,14 +8,13 @@
 
 class Time {
 public:
-    Time(unsigned int f);
+    Time(const unsigned& f = 60);
     ~Time() = default;
 
     void Update();
     void UpdateLate();
 
     const double& Delta() const { return delta; };
-
     const double& Now() const { return now; }
 
 private:

@@ -8,7 +8,7 @@
 
 class PhysicsBody {
 public:
-    PhysicsBody(int x, int y, int w, int h);
+    PhysicsBody(const int& x, const int& y, const int& w, const int& h);
     ~PhysicsBody() = default;
 
     vec2 position;

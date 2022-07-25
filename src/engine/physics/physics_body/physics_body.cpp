@@ -4,9 +4,9 @@
 
 #include "physics_body.h"
 
-PhysicsBody::PhysicsBody(int x, int y, int w, int h) :
-    position({(double)x, (double)y}),
-    size({(double)w, (double)h}),
-    velocity(vec2(0, 0)),
-    acceleration(vec2(0, 0))
+PhysicsBody::PhysicsBody(const int& x, const int& y, const int& w, const int& h) :
+    position( { (double)x, (double)y } ),
+    size( { (double)w, (double)h } ),
+    velocity( { 0, 0 } ),
+    acceleration( { 0, 0 } )
 {}

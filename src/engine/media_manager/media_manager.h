@@ -12,17 +12,23 @@
 #include "texture/texture.h"
 #include "animation/animation.h"
 
-namespace MediaManager {
-    extern unsigned int rmask, gmask, bmask, amask;
+class MediaManager {
+public:
+    MediaManager();
+    ~MediaManager();
 
-    void Init();
     void Close();
-
-    void UpdateAnimation(double current_time);
 
     Texture* NewTexture(const char* file, SDL_Renderer* renderer);
 
-    Animation* NewAnimation(Texture* t, int sz_x, int sz_y, int n_frames, double delay);
+    void UpdateAnimation(const double& current_time);
+    Animation* NewAnimation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& delay);
+
+private:
+    unsigned rmask, gmask, bmask, amask;
+
+    std::vector<Texture*> textures;
+    std::vector<Animation*> animations;
 };
 
 

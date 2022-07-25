@@ -11,6 +11,7 @@
 #include "particle/particle.h"
 #include "gui/gui.h"
 
+
 enum DRAW_TYPE {
     DRAW_RECT,
     DRAW_FILL_RECT,
@@ -18,50 +19,60 @@ enum DRAW_TYPE {
     DRAW_PIXEL
 };
 
+
 class Engine {
 public:
-    Engine(std::string wname, int w, int h, int fps);
+    // constructor
+    Engine(const std::string& wname, const int& w, const int& h, const int& fps);
     ~Engine();
-
-    SDL_Renderer* R() {return render.Renderer();};  // for testing purpose -> will be deleted
-
     void Close();
 
+
+    // loop
     void LoopBegin();
     void LoopEnd();
 
     void RenderBegin();
     void RenderEnd();
 
+
     // render
-    void Draw(DRAW_TYPE draw_type, Color col, int x, int y, int w = 0, int h = 0);
-    void Print(std::string text, int x, int y, int size = 64);
-    void DrawPhysicsBody(PhysicsBody* body, Color col = COLOR_RED);
-    void DrawTexture(Texture* texture, int x, int y);
-    void DrawAnimation(Animation* animation, int x, int y);
+    void Draw(const DRAW_TYPE& draw_type, const Color& col, const int& x, const int& y, const int& w = 0, const int& h = 0);
+    void Print(const std::string& text, const int& x, const int& y, const int& size = 64);
+    void DrawPhysicsBody(PhysicsBody* body, const Color& col = COLOR_RED);
+    void DrawTexture(Texture* texture, const int& x, const int& y);
+    void DrawAnimation(Animation* animation, const int& x, const int& y);
+
 
     // physics
-    PhysicsBody* NewPhysicsBody(int x, int y, int w, int h);
+    PhysicsBody* NewPhysicsBody(const int& x, const int& y, const int& w, const int& h);
+
 
     // settings
     void SetClearColor(Color col);
 
+
     // media
     Texture* NewTexture(const char* file);
-    Animation* NewAnimation(Texture* t, int sz_x, int sz_y, int n_frames, double delay);
+    Animation* NewAnimation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& delay);
+
 
     // time
     double GetTime();
-    double Delta() {return time.Delta();};
+    double Delta();
 
 
     // particle
     Particle* NewParticle(Texture* texture);
 
+
     // gui
-    Button* ButtonNew(void (*act)(), std::string val, unsigned ft_size, int x, int y, int w = 0, int h = 0);
+    Button* ButtonNew(void (*act)(), const std::string& val, const unsigned& ft_size, const int& x, const int& y, const int& w = 0, const int& h = 0);
+    void ButtonDelete(Button* bt_to_delete);
+
 
 private:
+    MediaManager media_manager;
     Render render;
     Time time;
     Physics physics;

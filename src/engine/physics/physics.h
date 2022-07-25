@@ -15,7 +15,7 @@ public:
 
     void Update(const Time& time);
 
-    PhysicsBody& NewBody(int x, int y, int w, int h);
+    PhysicsBody& NewBody(const int& x, const int& y, const int& w, const int& h);
 
 private:
     std::vector<PhysicsBody> physics_bodies;

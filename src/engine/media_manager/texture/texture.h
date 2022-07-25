@@ -14,23 +14,22 @@ public:
         size(vec2())
     {
         int w, h;
-        SDL_QueryTexture(sdl_texture, NULL, NULL, &w, &h);
-        size = vec2(w, h);
+        SDL_QueryTexture( sdl_texture, NULL, NULL, &w, &h );
+        size = vec2( w, h );
     };
     ~Texture() {
         Delete();
     };
     void Delete() {
-        SDL_DestroyTexture(sdl_texture);
+        SDL_DestroyTexture( sdl_texture );
     }
 
-    SDL_Texture* GetSDLTexture() const {return sdl_texture;};
-    vec2 GetSize() const {return size;};
+    SDL_Texture* GetSDLTexture() const { return sdl_texture; };
+    vec2 GetSize() const { return size; };
 
 private:
     SDL_Texture* sdl_texture;
     vec2 size;
-
 };
 
 

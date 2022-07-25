@@ -11,12 +11,12 @@
 
 class Animation {
 public:
-    Animation(Texture* t, int sz_x, int sz_y, int n_frames, double d);
+    Animation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& d);
     ~Animation();
 
     void Delete();
 
-    void Update(double current_time);
+    void Update(const double& current_time);
 
     vec2 GetFrameSize();
     Texture* GetTexture();

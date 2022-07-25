@@ -13,8 +13,8 @@ void Physics::Update(const Time& time) {
     }
 }
 
-PhysicsBody& Physics::NewBody(int x, int y, int w, int h) {
-    PhysicsBody body = {x, y, w, h};
+PhysicsBody& Physics::NewBody(const int& x, const int& y, const int& w, const int& h) {
+    PhysicsBody body = { x, y, w, h };
     physics_bodies.push_back(body);
     return physics_bodies[physics_bodies.size() - 1];
 }
