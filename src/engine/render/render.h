@@ -25,6 +25,7 @@ public:
     void End(const Color& clear_color);
 
     SDL_Renderer*& Renderer();
+    SDL_Window*& Window();
 
     // drawing
     void DrawFillRect(const int& x, const int& y, const int& w, const int& h, Color color);

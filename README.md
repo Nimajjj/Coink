@@ -1,4 +1,4 @@
-# Personal SDL Graphical Engine
+# CoinkEngine <img src="ressource/coink.png" alt="coink logo">
 
 ## Description
 

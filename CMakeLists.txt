@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(Engine)
+project(CoinkEngine)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -14,7 +14,8 @@ file(GLOB_RECURSE SOURCES
         ${PROJECT_SOURCE_DIR}/src/*.cpp
         )
 
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${APP_ICON_RESOURCE_WINDOWS})
 
 target_link_libraries(${PROJECT_NAME} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)

@@ -12,7 +12,7 @@ void func3() { std::cout << "YEAAAAAH 3" << "\n"; }
 
 int main(int argc, char** argv) {
     srand(time(NULL));
-    auto engine = Engine("Engine [core] v0.1", w, h, 60);
+    auto engine = Engine("Coink [core] v0.1", w, h, 60);
     engine.SetClearColor({43, 42, 51});
 
     auto b1 = engine.ButtonNew(&func1, "Press me 1", 32, 32, 32);

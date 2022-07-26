@@ -89,6 +89,10 @@ SDL_Renderer*& Render::Renderer() {
     return renderer;
 }
 
+SDL_Window*& Render::Window() {
+    return window;
+}
+
 
 // drawing
 
