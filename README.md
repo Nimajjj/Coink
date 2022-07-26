@@ -1,8 +1,9 @@
-# CoinkEngine <img src="ressource/coink.png" alt="coink logo">
+# CoinkEngine 
+<img src="ressource/coink_256.png" alt="coink logo">
 
 ## Description
 
-My personal C++ graphical engine made with SDL2, SDL_image & SDL_ttf.
+My personal C++ graphical/game engine made with SDL2, SDL_image & SDL_ttf.
 
 
 ## Version History
