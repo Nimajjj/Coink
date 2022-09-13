@@ -32,6 +32,8 @@ public:
     void DrawRect(const int& x, const int& y, const int& w, const int& h, Color color);
     void DrawPixel(const int& x, const int& y, Color color);
     void DrawLine(const int& x1, const int& y1, const int& x2, const int& y2, Color color);
+    void DrawCircle(const int& center_x, const int& center_y, const int& rad, Color color);
+    void DrawFillCircle(const int& center_x, const int& center_y, const int& rad, Color color);
 
 
     // text

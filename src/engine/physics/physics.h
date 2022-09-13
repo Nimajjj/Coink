@@ -10,15 +10,23 @@
 
 class Physics {
 public:
-    Physics() {};
+    Physics(): gravity({0.0, 1000.0}) {};
     ~Physics() = default;
 
-    void Update(const Time& time);
+    void Update(const double& delta);
 
-    PhysicsBody& NewBody(const int& x, const int& y, const int& w, const int& h);
+    PhysicsBody* NewBody(const int& x, const int& y, const double& rad, const Color& col = COLOR_GREEN);
+
+
+    std::vector<PhysicsBody> physics_bodies;
 
 private:
-    std::vector<PhysicsBody> physics_bodies;
+    vec2 gravity;
+
+    void apply_gravity();
+    void update_position(const double& delta);
+    void apply_constraint();
+    void solve_colisions();
 };
 
 

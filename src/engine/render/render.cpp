@@ -53,7 +53,7 @@ void Render::init_window(const std::string& name) {
             SDL_WINDOWPOS_CENTERED,
             width,
             height,
-            SDL_WINDOW_SHOWN
+            SDL_WINDOW_SHOWN // | SDL_WINDOW_RESIZABLE
     );
 
     if ( !window ){
@@ -118,6 +118,55 @@ void Render::DrawPixel(const int& x, const int& y, Color color) {
 void Render::DrawLine(const int& x1, const int& y1, const int& x2, const int& y2, Color color) {
     SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
     SDL_RenderDrawLine( renderer, x1, y1, x2, y2 );
+}
+
+void Render::DrawCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
+    const int32_t diameter = (rad * 2);
+
+    int32_t x = (rad - 1);
+    int32_t y = 0;
+    int32_t tx = 1;
+    int32_t ty = 1;
+    int32_t error = (tx - diameter);
+
+    SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
+    while (x >= y) {
+        //  Each of the following renders an octant of the circle
+        SDL_RenderDrawPoint(renderer, center_x + x, center_y - y);
+        SDL_RenderDrawPoint(renderer, center_x + x, center_y + y);
+        SDL_RenderDrawPoint(renderer, center_x - x, center_y - y);
+        SDL_RenderDrawPoint(renderer, center_x - x, center_y + y);
+        SDL_RenderDrawPoint(renderer, center_x + y, center_y - x);
+        SDL_RenderDrawPoint(renderer, center_x + y, center_y + x);
+        SDL_RenderDrawPoint(renderer, center_x - y, center_y - x);
+        SDL_RenderDrawPoint(renderer, center_x - y, center_y + x);
+
+        if (error <= 0) {
+            ++y;
+            error += ty;
+            ty += 2;
+        }
+
+        if (error > 0) {
+            --x;
+            tx += 2;
+            error += (tx - diameter);
+        }
+    }
+}
+
+void Render::DrawFillCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    for (int w = 0; w < rad * 2; w++) {
+        for (int h = 0; h < rad * 2; h++) {
+            int dx = rad - w; // horizontal offset
+            int dy = rad - h; // vertical offset
+            if ((dx*dx + dy*dy) <= (rad * rad))
+            {
+                SDL_RenderDrawPoint(renderer, center_x + dx, center_y + dy);
+            }
+        }
+    }
 }
 
 

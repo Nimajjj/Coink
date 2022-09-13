@@ -5,6 +5,7 @@
 #ifndef GAMEENGINE_TIME_H
 #define GAMEENGINE_TIME_H
 #include <SDL.h>
+#include <iostream>
 
 class Time {
 public:
@@ -16,6 +17,7 @@ public:
 
     const double& Delta() const { return delta; };
     const double& Now() const { return now; }
+    const unsigned int& FrameRate() const { return frame_rate; }
 
 private:
     double delta;

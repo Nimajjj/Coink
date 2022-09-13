@@ -4,6 +4,8 @@
 
 #ifndef GAMEENGINE_TYPES_H
 #define GAMEENGINE_TYPES_H
+#include <iostream>
+#include <math.h>
 
 typedef struct vec2 {
     double x;
@@ -13,6 +15,10 @@ typedef struct vec2 {
     vec2(double a) : x(a), y(a) {}
     vec2() : x(0.0), y(0.0) {}
     vec2(const vec2& v) : x(v.x), y(v.y) {}
+
+    double length() const {
+        return sqrt((x * x) + (y * y));
+    }
 
     void operator+=(const vec2& b) {
         x += b.x;
@@ -24,7 +30,16 @@ typedef struct vec2 {
         y -= b.y;
     }
 
+    void operator*=(const vec2& b) {
+        x *= b.x;
+        y *= b.y;
+    }
+
     vec2 operator+(const vec2& b) {
+        return {x + b.x, y + b.y};
+    }
+
+    vec2 operator+(const vec2& b) const {
         return {x + b.x, y + b.y};
     }
 
@@ -36,9 +51,27 @@ typedef struct vec2 {
         return {x * b, y * b};
     }
 
+    vec2 operator*(const double& b) const {
+        return {x * b, y * b};
+    }
+
     vec2 operator/(const double& b) {
         return {x / b, y / b};
     }
+
+    vec2  operator/(const double& b) const {
+        return {x / b, y / b};
+    }
+
+    vec2 operator/(const vec2& b) {
+        return {x / b.x, y / b.y};
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const vec2& a) {
+        os << "(" << a.x << ", " << a.y << ")";
+        return os;
+    }
+
 } vec2;
 
 typedef struct color {

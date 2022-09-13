@@ -2,27 +2,23 @@
 #include <SDL.h>
 #include "engine/engine.h"
 #include "cmath"
+#include "string"
 
-double w = 640; // for debug use only
-double h = 480;
 
-void func1() { std::cout << "YEAAAAAH 1" << "\n"; }
-void func2() { std::cout << "YEAAAAAH 2" << "\n"; }
-void func3() { std::cout << "YEAAAAAH 3" << "\n"; }
 
 int main(int argc, char** argv) {
     srand(time(NULL));
-    auto engine = Engine("Coink [core] v0.1", w, h, 60);
+    Engine engine = {"Coink [core] v0.1", 1280, 720, 60};
     engine.SetClearColor({43, 42, 51});
 
-    auto b1 = engine.ButtonNew(&func1, "Press me 1", 32, 32, 32);
-    auto b2 = engine.ButtonNew(&func2, "Press me 2", 32, 32, 128);
-    auto b3 = engine.ButtonNew(&func3, "Press me 3", 32, 32,  128 + (128 - 32));
+    //PhysicsBody* b1 = engine.NewPhysicsBody(500, 720/2);
+    //PhysicsBody* b2 = engine.NewPhysicsBody(600, 720/2);
+    //PhysicsBody* b3 = engine.NewPhysicsBody(700, 720/2);
 
-
-    unsigned x = 0;
-    double elapsed_time = 0;
     bool should_quit = false;
+    double elapsed_time = 0.0;
+    unsigned count = 0;
+
     while (!should_quit) {
         engine.LoopBegin();
 
@@ -35,7 +31,24 @@ int main(int argc, char** argv) {
             }
             break;
         }
+
+        if (count < 400) {
+            if (engine.GetTime() - elapsed_time > 30) {
+                elapsed_time = engine.GetTime();
+                engine.NewPhysicsBody(1280/2, 70, 8 + rand() % 16, {100 + rand() % 100, 100 + rand() % 100, 100 + rand() % 100});
+                count++;
+            }
+        }
+
+
         engine.RenderBegin();
+        engine.Draw(DRAW_CIRCLE, COLOR_WHITE, 1280/2, 720/2, 350);
+        engine.RenderPhysicsBodies();
+
+        std::string fps = "FPS : " + std::to_string(engine.GetFramerate());
+        std::string bodies_count = "Bodies : " + std::to_string(count);
+        engine.Print(fps, 16, 16, 32);
+        engine.Print(bodies_count, 16, 16 + 32, 32);
 
         engine.RenderEnd();
         engine.LoopEnd();

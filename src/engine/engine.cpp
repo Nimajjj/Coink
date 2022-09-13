@@ -33,7 +33,7 @@ void Engine::Close() {
 
 void Engine::LoopBegin() {
     time.Update();
-    physics.Update( time );
+    physics.Update( time.Delta() );
     media_manager.UpdateAnimation( GetTime() );
     gui.UpdateButtons();
 }
@@ -46,7 +46,7 @@ void Engine::LoopEnd() {
 void Engine::RenderBegin() {
     render.Begin();
 
-    for ( auto& particle : particles ) {
+    for ( auto& particle : particles ) {        // move loop to particles solver
         particle->Update( render.Renderer() );
     }
 
@@ -78,6 +78,15 @@ void Engine::Draw(const DRAW_TYPE& draw_type, const Color& col, const int& x, co
             render.DrawPixel( x, y, col );
             break;
 
+        case DRAW_CIRCLE:
+            render.DrawCircle( x, y, w, col );
+            break;
+
+        case DRAW_FILL_CIRCLE:
+            render.DrawFillCircle( x, y, w, col );
+            break;
+
+
         default:
             break;
     }
@@ -86,23 +95,6 @@ void Engine::Draw(const DRAW_TYPE& draw_type, const Color& col, const int& x, co
 void Engine::Print(const std::string& text, const int& x, const int& y, const int& size) {
     render.Print( text, x, y, size );
 
-}
-
-void Engine::DrawPhysicsBody(PhysicsBody* body, const Color& col) {
-    render.DrawRect(
-            body->position.x,
-            body->position.y,
-            body->size.x,
-            body->size.y,
-            col
-            );
-    render.DrawLine(
-            body->position.x,
-            body->position.y,
-            body->position.x + body->size.x - 1,
-            body->position.y + body->size.y - 1,
-            col
-            );
 }
 
 void Engine::DrawTexture(Texture* texture, const int& x, const int& y) {
@@ -128,8 +120,8 @@ void Engine::DrawAnimation(Animation* animation, const int& x, const int& y) {
 
 // physics
 
-PhysicsBody* Engine::NewPhysicsBody(const int& x, const int& y, const int& w, const int& h) {
-    return &physics.NewBody( x, y, w, h );
+PhysicsBody* Engine::NewPhysicsBody(const int& x, const int& y, const double& rad, const Color& col) {
+    return physics.NewBody( x, y, rad, col );
 }
 
 
@@ -159,6 +151,10 @@ double Engine::GetTime() {
 
 double Engine::Delta() {
     return time.Delta();
+}
+
+const unsigned int& Engine::GetFramerate() {
+    return time.FrameRate();
 }
 
 
@@ -191,4 +187,11 @@ Button* Engine::ButtonNew(void (*act)(), const std::string& val, const unsigned&
 
 void Engine::ButtonDelete(Button* bt_to_delete) {
     gui.ButtonDelete( bt_to_delete );
+}
+
+void Engine::RenderPhysicsBodies() {
+    for (auto& body : physics.physics_bodies) {
+        render.DrawFillCircle(body.position.x, body.position.y, body.radius, body.color);
+        render.DrawCircle(body.position.x, body.position.y, body.radius, COLOR_WHITE);
+    }
 }

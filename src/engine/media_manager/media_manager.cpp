@@ -4,9 +4,10 @@
 
 #include "media_manager.h"
 
-// TODO :
-// remove MediaManager namspace and pu everything into the Texture class
-
+/*
+ * TODO :
+ *  - Remove MediaManager namspace and pu everything into the Texture class
+ */
 
 
 MediaManager::MediaManager() {

@@ -16,7 +16,9 @@ enum DRAW_TYPE {
     DRAW_RECT,
     DRAW_FILL_RECT,
     DRAW_LINE,
-    DRAW_PIXEL
+    DRAW_PIXEL,
+    DRAW_CIRCLE,
+    DRAW_FILL_CIRCLE
 };
 
 
@@ -39,13 +41,12 @@ public:
     // render
     void Draw(const DRAW_TYPE& draw_type, const Color& col, const int& x, const int& y, const int& w = 0, const int& h = 0);
     void Print(const std::string& text, const int& x, const int& y, const int& size = 64);
-    void DrawPhysicsBody(PhysicsBody* body, const Color& col = COLOR_RED);
     void DrawTexture(Texture* texture, const int& x, const int& y);
     void DrawAnimation(Animation* animation, const int& x, const int& y);
 
 
     // physics
-    PhysicsBody* NewPhysicsBody(const int& x, const int& y, const int& w, const int& h);
+    PhysicsBody* NewPhysicsBody(const int& x, const int& y, const double& rad, const Color& col = COLOR_GREEN);
 
 
     // settings
@@ -60,6 +61,7 @@ public:
     // time
     double GetTime();
     double Delta();
+    const unsigned int& GetFramerate();
 
 
     // particle
@@ -69,6 +71,9 @@ public:
     // gui
     Button* ButtonNew(void (*act)(), const std::string& val, const unsigned& ft_size, const int& x, const int& y, const int& w = 0, const int& h = 0);
     void ButtonDelete(Button* bt_to_delete);
+
+    // debug
+    void RenderPhysicsBodies();
 
 
 private:

@@ -8,13 +8,17 @@
 
 class PhysicsBody {
 public:
-    PhysicsBody(const int& x, const int& y, const int& w, const int& h);
     ~PhysicsBody() = default;
+    PhysicsBody(const int& x, const int& y, const double& rad, const Color& col = COLOR_GREEN);
 
     vec2 position;
-    vec2 size;
-    vec2 velocity;
+    vec2 position_old;
     vec2 acceleration;
+    double radius;
+    Color color;
+
+    void UpdatePosition(const double& delta);
+    void Accelerate(vec2 acc);
 };
 
 
