@@ -8,6 +8,9 @@ My personal C++ graphical/game engine made with SDL2, SDL_image & SDL_ttf.
 
 ## Version History
 
+* 0.1.1
+  * Begin verlet integration physics
+
 * 0.1
     * Initial Release
     * Shapes drawing

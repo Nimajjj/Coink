@@ -3,76 +3,101 @@
 //
 
 #include "physics.h"
-#include<iostream>
-#include <math.h>
-#include <stdlib.h>
+
+const vec2 GRAVITY = {0, 1000};
+const double BOUNCE_FACTOR = 0.6;
+const double FRICTION_FACTOR = 0.999;
+const unsigned SUB_STEPS = 8;
+const unsigned SCREEN_WIDTH = 1280;
+const unsigned SCREEN_HEIGHT = 720;
 
 
 void Physics::Update(const double& delta) {
-    const unsigned sub_steps = 4;
-    const double sub_dt = delta / static_cast<double>(sub_steps);
+    double sub_delta = delta / (double)SUB_STEPS;
 
-    for (unsigned i = sub_steps; i--;) {
-        apply_gravity();
-        apply_constraint();
-        solve_colisions();
-        update_position(sub_dt);
+    update_bodies(delta);
+    for (unsigned  i = SUB_STEPS; i--;) {
+        update_sticks();
+        constrain_bodies();
     }
 }
 
-PhysicsBody* Physics::NewBody(const int& x, const int& y, const double& rad, const Color& col) {
-    physics_bodies.push_back(PhysicsBody(x, y, rad, col));
-    return &physics_bodies.back();
+
+VBody Physics::NewVerletBody(const double& x, const double& y, const vec2& vel, const bool& pin) {
+    verlet_bodies.push_back({
+        x,
+        y,
+        vel,
+        pin
+    });
+    return verlet_bodies.size() - 1;
 }
 
-void Physics::apply_gravity() {
-    for (auto& body : physics_bodies) {
-        body.Accelerate(gravity);
-    }
+VStick Physics::NewVerletStick(const VBody& body0, const VBody& body1) {
+    verlet_sticks.push_back({body0, body1});
+
+    const vec2 d = verlet_bodies[body0].position - verlet_bodies[body1].position;
+    verlet_sticks[verlet_sticks.size() - 1].length = sqrt(d.x * d.x + d.y * d.y);
+
+    return verlet_sticks.size() - 1;
 }
 
-void Physics::update_position(const double& delta) {
-    for (auto& body : physics_bodies) {
-        body.UpdatePosition(delta);
-    }
-}
 
-void Physics::apply_constraint() {
-    const vec2 position = {1280/2, 720/2};
-    const double radius = 350.0;
+void Physics::update_bodies(const double& delta) {
+    for (auto& body : verlet_bodies) {
+        if (!body.pinned) {
+            vec2 velocity = body.position - body.position_old;
+            body.position_old = body.position;
+            body.position += velocity + body.acceleration * FRICTION_FACTOR * delta * delta;
 
-    for (auto& body : physics_bodies) {
-        const vec2 to_body = body.position - position;
-        const double dist = sqrt((to_body.x * to_body.x) + (to_body.y * to_body.y));
+            body.acceleration = {};
 
-        if (dist > radius - body.radius) { // 32 is default body size
-            const vec2 n = to_body / dist;
-            body.position = position + n * (radius - body.radius);
+            body.acceleration += GRAVITY;
         }
     }
 }
 
-void Physics::solve_colisions() {
-    unsigned i = 0;
-    for (auto& body_1 : physics_bodies) {
-        for (unsigned j = i + 1; j < physics_bodies.size(); ++j) {
-            PhysicsBody& body_2 = physics_bodies[j];
+void Physics::update_sticks() {
+    for (auto& stick : verlet_sticks) {
+        VerletBody* b0 = &verlet_bodies[stick.b0];
+        VerletBody* b1 = &verlet_bodies[stick.b1];
 
-            const vec2 collision_axis = body_1.position - body_2.position;
-            const double dist = collision_axis.length();
-            const double min_dist = body_1.radius + body_2.radius;
+        const vec2 d = b1->position - b0->position;
+        const double distance = sqrt(d.x * d.x + d.y * d.y);
+        const double difference = stick.length - distance;
+        const double percent = difference / distance / 2.0;
+        const vec2 offset = d * percent;
 
-            if (dist < min_dist) {  // if two bodies overlap
-                const vec2 n = collision_axis / dist;
-                const double delta = min_dist - dist;
+        if (!b0->pinned) {
+            b0->position -= offset;
+        }
 
-                vec2 offset = 0.5 * delta;
-                offset *= n;
+        if (!b1->pinned) {
+            b1->position += offset;
+        }
+    }
+}
 
-                body_1.position += offset;
-                body_2.position -= offset;
+void Physics::constrain_bodies() {
+    for (auto& body : verlet_bodies) {
+        if (!body.pinned) {
+            vec2 velocity = (body.position - body.position_old) * FRICTION_FACTOR;
+
+            if (body.position.x > SCREEN_WIDTH) {
+                body.position.x = SCREEN_WIDTH;
+                body.position_old.x = body.position.x + velocity.x * BOUNCE_FACTOR;
+            } else if (body.position.x < 0) {
+                body.position.x = 0;
+                body.position_old.x = body.position.x + velocity.x * BOUNCE_FACTOR;
+            }
+
+            if (body.position.y > SCREEN_HEIGHT) {
+                body.position.y = SCREEN_HEIGHT;
+                body.position_old.y = body.position.y + velocity.y * BOUNCE_FACTOR;
+            } else if (body.position.y < 0) {
+                body.position.y = 0;
+                body.position_old.y = body.position.y + velocity.y * BOUNCE_FACTOR;
             }
         }
-        i++;
     }
 }

@@ -46,7 +46,8 @@ public:
 
 
     // physics
-    PhysicsBody* NewPhysicsBody(const int& x, const int& y, const double& rad, const Color& col = COLOR_GREEN);
+    VBody NewVerletBody(const double& x, const double& y, const vec2& vel = {0.0, 0.0}, const bool& pin = false);
+    VStick NewVerletStick(const VBody& body0, const VBody& body1);
 
 
     // settings
@@ -72,8 +73,7 @@ public:
     Button* ButtonNew(void (*act)(), const std::string& val, const unsigned& ft_size, const int& x, const int& y, const int& w = 0, const int& h = 0);
     void ButtonDelete(Button* bt_to_delete);
 
-    // debug
-    void RenderPhysicsBodies();
+    void RenderVerletBodies();
 
 
 private:

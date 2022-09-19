@@ -7,6 +7,9 @@
 #include <iostream>
 #include <math.h>
 
+typedef unsigned int VBody;
+typedef unsigned int VStick;
+
 typedef struct vec2 {
     double x;
     double y;
@@ -44,6 +47,9 @@ typedef struct vec2 {
     }
 
     vec2 operator-(const vec2& b) {
+        return {x - b.x, y - b.y};
+    }
+    vec2 operator-(const vec2& b) const {
         return {x - b.x, y - b.y};
     }
 

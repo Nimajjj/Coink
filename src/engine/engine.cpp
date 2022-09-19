@@ -33,7 +33,7 @@ void Engine::Close() {
 
 void Engine::LoopBegin() {
     time.Update();
-    physics.Update( time.Delta() );
+    physics.Update(time.Delta());
     media_manager.UpdateAnimation( GetTime() );
     gui.UpdateButtons();
 }
@@ -119,9 +119,12 @@ void Engine::DrawAnimation(Animation* animation, const int& x, const int& y) {
 
 
 // physics
+VBody Engine::NewVerletBody(const double& x, const double& y, const vec2& vel, const bool& pin) {
+    return physics.NewVerletBody(x, y, vel, pin);
+}
 
-PhysicsBody* Engine::NewPhysicsBody(const int& x, const int& y, const double& rad, const Color& col) {
-    return physics.NewBody( x, y, rad, col );
+VStick Engine::NewVerletStick(const VBody& body0, const VBody& body1) {
+    return  physics.NewVerletStick(body0, body1);
 }
 
 
@@ -189,9 +192,20 @@ void Engine::ButtonDelete(Button* bt_to_delete) {
     gui.ButtonDelete( bt_to_delete );
 }
 
-void Engine::RenderPhysicsBodies() {
-    for (auto& body : physics.physics_bodies) {
-        render.DrawFillCircle(body.position.x, body.position.y, body.radius, body.color);
-        render.DrawCircle(body.position.x, body.position.y, body.radius, COLOR_WHITE);
+void Engine::RenderVerletBodies() {
+    for (auto& stick : physics.verlet_sticks) {
+        VerletBody* b0 = &physics.verlet_bodies[stick.b0];
+        VerletBody* b1 = &physics.verlet_bodies[stick.b1];
+        render.DrawLine(
+                b0->position.x,
+                b0->position.y,
+                b1->position.x,
+                b1->position.y,
+                COLOR_WHITE
+                );
+    }
+
+    for (auto& body : physics.verlet_bodies) {
+        render.DrawFillCircle(body.position.x, body.position.y, 4, COLOR_RED);
     }
 }

@@ -5,28 +5,32 @@
 #ifndef GAMEENGINE_PHYSICS_H
 #define GAMEENGINE_PHYSICS_H
 #include <vector>
-#include "physics_body/physics_body.h"
+#include <iostream>
+#include <math.h>
+#include <stdlib.h>
 #include "../time/time.h"
+#include "verlet_body/verlet_body.h"
+#include "verlet_stick/verlet_stick.h"
 
 class Physics {
 public:
-    Physics(): gravity({0.0, 1000.0}) {};
+    Physics() {};
     ~Physics() = default;
 
     void Update(const double& delta);
 
-    PhysicsBody* NewBody(const int& x, const int& y, const double& rad, const Color& col = COLOR_GREEN);
+    VBody NewVerletBody(const double& x, const double& y, const vec2& vel = {0.0, 0.0}, const bool& pin = false);
+    VStick NewVerletStick(const VBody& body0, const VBody& body1);
 
 
-    std::vector<PhysicsBody> physics_bodies;
-
+    std::vector<VerletBody> verlet_bodies;
+    std::vector<VerletStick> verlet_sticks;
 private:
-    vec2 gravity;
 
-    void apply_gravity();
-    void update_position(const double& delta);
-    void apply_constraint();
-    void solve_colisions();
+
+    void update_bodies(const double& delta);
+    void update_sticks();
+    void constrain_bodies();
 };
 
 
