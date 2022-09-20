@@ -2,7 +2,7 @@
 // Created by Ben on 24/07/2022.
 //
 
-#include "gui.h"
+#include "gui/gui.h"
 
 GUI::GUI() :
     last_mouse_state(0)

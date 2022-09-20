@@ -2,7 +2,7 @@
 // Created by Ben on 24/07/2022.
 //
 
-#include "button.h"
+#include "gui/button/button.h"
 
 Button::Button(void (*act)(), std::string val, unsigned ft_size, int x, int y, int w, int h) :
     action(act),

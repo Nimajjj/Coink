@@ -2,7 +2,7 @@
 // Created by Ben on 20/07/2022.
 //
 
-#include "time.h"
+#include "time/time.h"
 
 Time::Time(const unsigned& f) :
     frame_rate( f ),

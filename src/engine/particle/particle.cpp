@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "particle.h"
+#include "particle/particle.h"
 
 static void update_vec(std::vector<vec2>& to_update, const vec2& base, const vec2& random) {
     to_update.push_back( base );

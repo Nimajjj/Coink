@@ -192,7 +192,7 @@ void Engine::ButtonDelete(Button* bt_to_delete) {
     gui.ButtonDelete( bt_to_delete );
 }
 
-void Engine::RenderVerletBodies() {
+void Engine::RenderVerletBodies(bool bodies) {
     for (auto& stick : physics.verlet_sticks) {
         VerletBody* b0 = &physics.verlet_bodies[stick.b0];
         VerletBody* b1 = &physics.verlet_bodies[stick.b1];
@@ -204,8 +204,10 @@ void Engine::RenderVerletBodies() {
                 COLOR_WHITE
                 );
     }
-
-    for (auto& body : physics.verlet_bodies) {
-        render.DrawFillCircle(body.position.x, body.position.y, 4, COLOR_RED);
+    if (bodies) {
+        for (auto& body : physics.verlet_bodies) {
+            render.DrawFillCircle(body.position.x, body.position.y, 4, COLOR_RED);
+        }
     }
+
 }

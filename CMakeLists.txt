@@ -9,6 +9,12 @@ set(SDL2_LIB_DIR ${CMAKE_SOURCE_DIR}/lib/SDL2)
 include_directories(${SDL2_INCLUDE_DIR})
 link_directories(${SDL2_LIB_DIR})
 
+set(COINK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/Coink)
+set(COINK_LIB_DIR ${CMAKE_SOURCE_DIR}/lib/Coink)
+
+include_directories(${COINK_INCLUDE_DIR})
+link_directories(${COINK_LIB_DIR})
+
 
 file(GLOB_RECURSE SOURCES
         ${PROJECT_SOURCE_DIR}/src/*.cpp

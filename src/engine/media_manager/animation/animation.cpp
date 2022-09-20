@@ -2,7 +2,7 @@
 // Created by Ben on 21/07/2022.
 //
 
-#include "animation.h"
+#include "media_manager/animation/animation.h"
 
 Animation::Animation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& d) :
     texture(t),
