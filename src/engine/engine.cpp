@@ -193,9 +193,9 @@ void Engine::ButtonDelete(Button* bt_to_delete) {
 }
 
 void Engine::RenderVerletBodies(bool bodies) {
-    for (auto& stick : physics.verlet_sticks) {
-        VerletBody* b0 = &physics.verlet_bodies[stick.b0];
-        VerletBody* b1 = &physics.verlet_bodies[stick.b1];
+    for (auto& stick : physics.GetVerletSticks()) {
+        VerletBody* b0 = &physics.GetVerletBodies()[stick.b0];
+        VerletBody* b1 = &physics.GetVerletBodies()[stick.b1];
         render.DrawLine(
                 b0->position.x,
                 b0->position.y,
@@ -205,7 +205,7 @@ void Engine::RenderVerletBodies(bool bodies) {
                 );
     }
     if (bodies) {
-        for (auto& body : physics.verlet_bodies) {
+        for (auto& body : physics.GetVerletBodies()) {
             render.DrawFillCircle(body.position.x, body.position.y, 4, COLOR_RED);
         }
     }

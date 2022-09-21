@@ -6,10 +6,19 @@
 My personal C++ graphical/game engine made with SDL2, SDL_image & SDL_ttf.
 
 
-## Version History
+## Comming soon
+* Documentation
+* Build / Installation guide
+
+:w
+## Version History - Changelogs
 
 * 0.1.1
   * Begin verlet integration physics
+  * Add ./exemples directory
+  * Add first exemple : verlet integration cloth simulation
+  * /!\ Update project structure
+
 
 * 0.1
     * Initial Release

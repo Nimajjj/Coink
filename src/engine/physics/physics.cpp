@@ -7,7 +7,7 @@
 const vec2 GRAVITY = {0, 1000};
 const double BOUNCE_FACTOR = 0.6;
 const double FRICTION_FACTOR = 0.999;
-const unsigned SUB_STEPS = 8;
+const unsigned SUB_STEPS = 12;
 const unsigned SCREEN_WIDTH = 1280;
 const unsigned SCREEN_HEIGHT = 720;
 
@@ -26,8 +26,6 @@ void Physics::Update(const double& delta) {
         update_sticks();
         constrain_bodies();
     }
-
-    MouseInteraction();
 }
 
 
