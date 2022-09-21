@@ -1,26 +1,58 @@
+<img align="left" src="ressource/coink_256.png" alt="coink logo">
+
+
 # CoinkEngine 
-<img src="ressource/coink_256.png" alt="coink logo">
+Coink is a all-in one engine in an add-on library for the Simple Direct Media (SDL) cross-platform API layer.
 
+In long term my goal is to move Coink from SDL to OpenGL.
 
-## Description
-Coink is a all-in one engine wrapped up in a C++ based add-on library for the Simple Direct Media (SDL) cross-platform API layer.
+See the [WIKI](https://github.com/Nimajjj/Coink/wiki) ! 
 
-See the WIKI [here](https://github.com/Nimajjj/Coink/wiki) !    [WIP] 
-
-
+<br><br>
 ## Features
 * Basic graphics primitives (line, circle, rect ...)
 * Text printing
 * Texture
 * Sprite animation
 * Particles system
-* Verlet integration based physics solver
+* Verlet integration based physics engine
 * More comming soon
 
 
-## To do
-* Wiki [WIP]
-* Comment code
+## Basic exemple
+In this exemple a window is created and "Hello Coink!" is print in it.
+```c++
+#include "engine.h"
+
+int main(int argc, char** argv) {
+    Engine engine = {"Coink [DEMO] v0.1.1", 1280, 720, 60};
+
+    bool should_quit = false;
+    while (!should_quit) {
+        engine.LoopBegin(should_quit);
+
+        engine.RenderBegin();
+        engine.Print("Hello Coink!", 255, 255, 32);
+        engine.RenderEnd();
+
+        engine.LoopEnd();
+    }
+
+    engine.Close();
+    return 0;
+}
+```
+
+
+## Build - Installation
+[WIP]
+
+
+## To do / Work in progress
+* Wiki / documentation
+* Commenting code
+* Particle system
+* Physics engine
 
 
 ## Version History - Changelogs
