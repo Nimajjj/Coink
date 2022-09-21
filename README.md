@@ -5,6 +5,8 @@
 ## Description
 Coink is a all-in one engine wrapped up in a C++ based add-on library for the Simple Direct Media (SDL) cross-platform API layer.
 
+See the WIKI [here](https://github.com/Nimajjj/Coink/wiki) !    [WIP] 
+
 
 ## Features
 * Basic graphics primitives (line, circle, rect ...)
