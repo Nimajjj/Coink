@@ -11,11 +11,14 @@ Engine::Engine(const std::string& wname, const int& w, const int& h, const int& 
         render(Render(wname, w, h)),
         time(Time(fps)),
         physics(Physics()),
-        clear_color({0x00, 0x00, 0x00})
+        clear_color({0x00, 0x00, 0x00}),
+        debug_show_fps(false),
+        debug_render_verlet(false)
 {
     media_manager = MediaManager();
     render.InitText( "../ressource/font/NotoSans-Regular.ttf" );
     gui = GUI();
+    SetClearColor({43, 42, 51});
 }
 
 Engine::~Engine() {
@@ -31,11 +34,21 @@ void Engine::Close() {
 
 // loop
 
-void Engine::LoopBegin() {
+void Engine::LoopBegin(bool& should_quit) {
     time.Update();
     physics.Update(time.Delta());
     media_manager.UpdateAnimation( GetTime() );
     gui.UpdateButtons();
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                should_quit = true;
+                break;
+        }
+        break;
+    }
 }
 
 void Engine::LoopEnd() {
@@ -51,6 +64,14 @@ void Engine::RenderBegin() {
     }
 
     gui.Display( &render );
+
+    if (debug_show_fps) {
+        Print("FPS : " + std::to_string(GetFramerate()), 8, 8, 18);
+    }
+
+    if (debug_render_verlet) {
+        render_verlet_bodies(false);
+    }
 }
 
 void Engine::RenderEnd() {
@@ -192,7 +213,7 @@ void Engine::ButtonDelete(Button* bt_to_delete) {
     gui.ButtonDelete( bt_to_delete );
 }
 
-void Engine::RenderVerletBodies(bool bodies) {
+void Engine::render_verlet_bodies(bool bodies) {
     for (auto& stick : physics.GetVerletSticks()) {
         VerletBody* b0 = &physics.GetVerletBodies()[stick.b0];
         VerletBody* b1 = &physics.GetVerletBodies()[stick.b1];
@@ -210,4 +231,12 @@ void Engine::RenderVerletBodies(bool bodies) {
         }
     }
 
+}
+
+void Engine::DebugRenderVerlet() {
+    debug_render_verlet = !debug_render_verlet;
+}
+
+void Engine::DebugShowFPS() {
+    debug_show_fps = !debug_show_fps;
 }

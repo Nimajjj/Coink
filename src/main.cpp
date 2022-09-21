@@ -1,33 +1,28 @@
+#include <cmath>
 #include <iostream>
+#include <string>
 #include <SDL.h>
-#include "cmath"
-#include "string"
 #include "engine.h"
+
+#include "verlet_cloth_sim.h"
 
 
 int main(int argc, char** argv) {
     srand(time(NULL));
     Engine engine = {"Coink v0.1.1", 1280, 720, 60};
-    engine.SetClearColor({43, 42, 51});
+    engine.DebugShowFPS();
+    engine.DebugRenderVerlet();
+
+    InitClothSim(engine);
+
     bool should_quit = false;
-
     while (!should_quit) {
-        engine.LoopBegin();
+        engine.LoopBegin(should_quit);
 
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    should_quit = true;
-                    break;
-            }
-            break;
-        }
+        UpdateClothSim(engine.GetPhysicsSolver());
+
         engine.RenderBegin();
-        engine.RenderVerletBodies();
 
-
-        engine.Print("FPS : " + std::to_string(engine.GetFramerate()), 16, 16, 24);
         engine.RenderEnd();
         engine.LoopEnd();
     }

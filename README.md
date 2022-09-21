@@ -1,16 +1,22 @@
 # CoinkEngine 
 <img src="ressource/coink_256.png" alt="coink logo">
 
+
 ## Description
 
-My personal C++ graphical/game engine made with SDL2, SDL_image & SDL_ttf.
+My personal C++ graphical engine made with SDL2.
+
+Curently support basic GUI, particles, sprite animation, Verlet physics...
+
+More comming soon.
 
 
-## Comming soon
+## TODO 
 * Documentation
 * Build / Installation guide
+* Code comments
 
-:w
+
 ## Version History - Changelogs
 
 * 0.1.1
@@ -18,17 +24,19 @@ My personal C++ graphical/game engine made with SDL2, SDL_image & SDL_ttf.
   * Add ./exemples directory
   * Add first exemple : verlet integration cloth simulation
   * /!\ Update project structure
+  * Add ./dependencies directory which contain .dll files
 
 
-* 0.1
+* 0.1.0
     * Initial Release
     * Shapes drawing
     * Images drawing
     * Basic object motion
     * Limited framerate
-    * Basic particles system (WIP)
+    * Basic particles system [WIP]
     * GUI class set up
     * First functionall button
+
 
 ## License
 
