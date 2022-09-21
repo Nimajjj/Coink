@@ -34,7 +34,7 @@ void Engine::Close() {
 
 // loop
 
-void Engine::LoopBegin(bool& should_quit) {
+bool Engine::ShouldNotQuit() {
     time.Update();
     physics.Update(time.Delta());
     media_manager.UpdateAnimation( GetTime() );
@@ -44,19 +44,15 @@ void Engine::LoopBegin(bool& should_quit) {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                should_quit = true;
-                break;
+                return false;
         }
         break;
     }
+
+    return true;
 }
 
-void Engine::LoopEnd() {
-    time.UpdateLate();
-}
-
-
-void Engine::RenderBegin() {
+void Engine::LoopBegin() {
     render.Begin();
 
     for ( auto& particle : particles ) {        // move loop to particles solver
@@ -74,8 +70,9 @@ void Engine::RenderBegin() {
     }
 }
 
-void Engine::RenderEnd() {
+void Engine::LoopEnd() {
     render.End( clear_color );
+    time.UpdateLate();
 }
 
 

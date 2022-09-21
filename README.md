@@ -27,13 +27,10 @@ In this exemple a window is created and "Hello Coink!" is print in it.
 int main(int argc, char** argv) {
     Engine engine = {"Coink [DEMO] v0.1.1", 1280, 720, 60};
 
-    bool should_quit = false;
-    while (!should_quit) {
-        engine.LoopBegin(should_quit);
-
-        engine.RenderBegin();
-        engine.Print("Hello Coink!", 255, 255, 32);
-        engine.RenderEnd();
+    while (engine.ShouldNotQuit()) {
+        engine.LoopBegin();
+        
+        engine.Print("Hello Coink!", 0, 0, 32);
 
         engine.LoopEnd();
     }
@@ -78,4 +75,4 @@ int main(int argc, char** argv) {
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
-Made with <3
+Made with ❤️
