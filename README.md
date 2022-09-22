@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 
 
 ## Build - Installation
-See the [Getting Started](https://github.com/Nimajjj/Coink/wiki/Getting-Started)
+See [Getting Started](https://github.com/Nimajjj/Coink/wiki/Getting-Started)
 
 
 ## Version History - Changelogs
