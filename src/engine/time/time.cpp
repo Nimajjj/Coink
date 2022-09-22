@@ -4,13 +4,23 @@
 
 #include "time/time.h"
 
-Time::Time(const unsigned& f) :
-    frame_rate( f ),
-    frame_delay( 1000.0 / f )
-{}
+double delta;
+double now;
+double last;
 
+double frame_last;
+double frame_delay;
+double frame_time;
 
-void Time::Update() {
+unsigned int frame_rate;
+unsigned int frame_count;
+
+void TimeInit(const unsigned& f) {
+    frame_rate = f;
+    frame_delay = 1000.0 / f;
+}
+
+void TimeUpdate() {
     now = (double)SDL_GetTicks();
     delta = ( now - last ) / 1000.0;
     last = now;
@@ -23,10 +33,14 @@ void Time::Update() {
     }
 }
 
-void Time::UpdateLate() {
+void TimeUpdateLate() {
     frame_time = (double)SDL_GetTicks() - now;
 
     if ( frame_delay > frame_time ) {
         SDL_Delay( frame_delay - frame_time );
     }
 }
+
+const double& GetTimeDelta() { return delta; };
+const double& GetTime() { return now; }
+const unsigned int& GetFramerate() { return frame_rate; }

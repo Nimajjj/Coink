@@ -8,17 +8,25 @@
 static void update_vec(std::vector<vec2>& to_update, const vec2& base, const vec2& random) {
     to_update.push_back( base );
     if ( random.x != 0 ) {
-        to_update.back().x += rand() % 2 ? static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random.x ) ) : static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random.x ) ) ;
+        to_update.back().x +=
+                rand() % 2 ?
+                static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random.x ) ) :
+                static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random.x ) ) ;
     }
     if ( random.y != 0 ) {
-        to_update.back().y += rand() % 2 ? static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random.y ) ) : static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random.y ) ) ;
+        to_update.back().y +=
+                rand() % 2 ?
+                static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random.y ) ) :
+                static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random.y ) ) ;
     }
 }
 
 static void update_double(std::vector<double>& to_update, const double& base, const double& random) {
     to_update.push_back( base );
     if ( random != 0 ) {
-        to_update.back() += rand() % 2 ? static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random ) ) : static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random ) ) ;
+        to_update.back() += rand() % 2 ?
+                static_cast<float>( rand() ) / ( static_cast<float>( RAND_MAX / random ) ) :
+                static_cast<float>( rand() ) / -( static_cast<float>( RAND_MAX / random ) ) ;
     }
 }
 

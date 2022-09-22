@@ -42,24 +42,19 @@ int main(int argc, char** argv) {
 
 
 ## Build - Installation
-[WIP]
-
-
-## To do / Work in progress
-* Wiki / documentation
-* Commenting code
-* Particle system
-* Physics engine
+See the [Getting Started](https://github.com/Nimajjj/Coink/wiki/Getting-Started)
 
 
 ## Version History - Changelogs
 * 0.1.1
+  * ! Complete update of source code structure
+  * ! Update project files structure
   * Begin verlet integration physics
   * Add ./exemples directory
   * Add first exemple : verlet integration cloth simulation
-  * /!\ Update project structure
   * Add ./dependencies directory which contain .dll files
-<br>
+
+  
 
 * 0.1.0
     * Initial Release

@@ -5,40 +5,19 @@
 #include "render/render.h"
 
 
-// constructor & destructor
+// PRIVATE ---------------
 
-Render::Render(const std::string& name, const int& w, const int& h) :
-    width(w),
-    height(h),
-    font_size(64),
-    window(nullptr),
-    renderer(nullptr),
-    font(nullptr)
-{
-    init_sdl();
-    init_window(name);
-    init_renderer();
-}
+unsigned screen_width;
+unsigned screen_height;
 
-Render::~Render() {
-    Close();
-}
+unsigned font_size;
+TTF_Font* font;
+
+SDL_Window* window;
+SDL_Renderer* renderer;
 
 
-// init and close
-
-void Render::Close() {
-    if ( font != nullptr ) {
-        TTF_CloseFont( font );
-        TTF_Quit();
-    }
-
-    SDL_DestroyRenderer( renderer );
-    SDL_DestroyWindow( window );
-    SDL_Quit();
-}
-
-void Render::init_sdl() {
+void init_sdl() {
     if ( SDL_Init(SDL_INIT_VIDEO) > 0 ) {
         std::cout << "SDL_Init(SDL_INIT_VIDEO) HAS FAILED: " << SDL_GetError() << "\n";
     } else {
@@ -46,13 +25,13 @@ void Render::init_sdl() {
     }
 }
 
-void Render::init_window(const std::string& name) {
+void init_window(const std::string& name) {
     window = SDL_CreateWindow(
             name.c_str(),
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            width,
-            height,
+            screen_width,
+            screen_height,
             SDL_WINDOW_SHOWN // | SDL_WINDOW_RESIZABLE
     );
 
@@ -61,7 +40,7 @@ void Render::init_window(const std::string& name) {
     }
 }
 
-void Render::init_renderer() {
+void init_renderer() {
     renderer = SDL_CreateRenderer(
             window,
             -1,
@@ -74,53 +53,83 @@ void Render::init_renderer() {
     }
 }
 
+
+// PUBLIC ---------------
+
+// constructor & destructor
+
+void RenderInit(const std::string& name, const int& w, const int& h) {
+    screen_width = w;
+    screen_height = h;
+    font_size = 64;
+    init_sdl();
+    init_window(name);
+    init_renderer();
+}
+
+
+// init and close
+
+void RenderClose() {
+    if ( font != nullptr ) {
+        TTF_CloseFont( font );
+        TTF_Quit();
+    }
+
+    SDL_DestroyRenderer( renderer );
+    SDL_DestroyWindow( window );
+    SDL_Quit();
+}
+
+
+
 // rendering
 
-void Render::Begin() {
+void Begin() {
     SDL_RenderClear( renderer );
 }
 
-void Render::End(const Color& clear_color) {
+void End(const Color& clear_color) {
     SDL_SetRenderDrawColor( renderer, clear_color.r, clear_color.g, clear_color.b, 0xFF );
     SDL_RenderPresent( renderer );
 }
 
-SDL_Renderer*& Render::Renderer() {
+SDL_Renderer*& Renderer() {
     return renderer;
 }
 
-SDL_Window*& Render::Window() {
+SDL_Window*& Window() {
     return window;
 }
 
 
 // drawing
 
-void Render::DrawFillRect(const int& x, const int& y, const int& w, const int& h, Color color) {
+void DrawFillRect(const int& x, const int& y, const int& w, const int& h, Color color) {
     auto rect = SDL_Rect{ x, y, w, h };
 
     SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
     SDL_RenderFillRect( renderer, &rect );
 }
 
-void Render::DrawRect(const int& x, const int& y, const int& w, const int& h, Color color) {
+void DrawRect(const int& x, const int& y, const int& w, const int& h, Color color) {
     auto rect = SDL_Rect{ x, y, w, h };
 
     SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
     SDL_RenderDrawRect( renderer, &rect );
 }
 
-void Render::DrawPixel(const int& x, const int& y, Color color) {
+void DrawPixel(const int& x, const int& y, Color color) {
     SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
     SDL_RenderDrawPoint( renderer, x, y );
 }
 
-void Render::DrawLine(const int& x1, const int& y1, const int& x2, const int& y2, Color color) {
+void DrawLine(const int& x1, const int& y1, const int& x2, const int& y2, Color color) {
     SDL_SetRenderDrawColor( renderer, color.r, color.g, color.b, color.a );
     SDL_RenderDrawLine( renderer, x1, y1, x2, y2 );
 }
 
-void Render::DrawCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
+void DrawCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
     const int32_t diameter = (rad * 2);
 
     int32_t x = (rad - 1);
@@ -155,7 +164,7 @@ void Render::DrawCircle(const int& center_x, const int& center_y, const int& rad
     }
 }
 
-void Render::DrawFillCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
+void DrawFillCircle(const int& center_x, const int& center_y, const int& rad, Color color) {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     for (int w = 0; w < rad * 2; w++) {
         for (int h = 0; h < rad * 2; h++) {
@@ -172,12 +181,12 @@ void Render::DrawFillCircle(const int& center_x, const int& center_y, const int&
 
 // text
 
-void Render::InitText(const std::string& file) {
+void InitText(const std::string& file) {
     TTF_Init();
     font = TTF_OpenFont( file.c_str(), font_size );
 }
 
-void Render::Print(const std::string& text, const int& x, const int& y, const int& size) {
+void ScreenPrint(const std::string& text, const int& x, const int& y, const int& size) {
     SDL_Surface* surface = TTF_RenderText_Solid( font, text.c_str(), {0xFF,0xFF,0xFF} );
     SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, surface );
     SDL_FreeSurface( surface );
@@ -195,4 +204,8 @@ void Render::Print(const std::string& text, const int& x, const int& y, const in
 
     SDL_RenderCopy( renderer, texture, NULL, &dstrect );
     SDL_DestroyTexture( texture );
+}
+
+TTF_Font* GetFont() {
+    return font;
 }

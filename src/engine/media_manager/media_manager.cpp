@@ -9,8 +9,13 @@
  *  - Remove MediaManager namspace and pu everything into the Texture class
  */
 
+unsigned rmask, gmask, bmask, amask;
 
-MediaManager::MediaManager() {
+std::vector<Texture*> textures;
+std::vector<Animation*> animations;
+
+
+void MediaManagerInit() {
     if ( !(IMG_Init(IMG_INIT_PNG)) ) {
         std::cout << "IMG_Init HAS FAILED: " << SDL_GetError() << "\n";
     } else {
@@ -30,11 +35,8 @@ MediaManager::MediaManager() {
     #endif
 }
 
-MediaManager::~MediaManager() {
-    Close();
-}
 
-void MediaManager::Close() {
+void MediaManagerClose() {
     for ( auto& texture: textures ) {
         delete texture;
         texture = nullptr;
@@ -47,7 +49,7 @@ void MediaManager::Close() {
 }
 
 
-Texture* MediaManager::NewTexture(const char* file, SDL_Renderer* renderer) {
+Texture* NewTexture(const char* file, SDL_Renderer* renderer) {
     SDL_Texture* sdl_texture =  IMG_LoadTexture( renderer, file );
 
     if ( sdl_texture == NULL ) {
@@ -60,13 +62,13 @@ Texture* MediaManager::NewTexture(const char* file, SDL_Renderer* renderer) {
 }
 
 
-void MediaManager::UpdateAnimation(const double& current_time) {
+void UpdateAnimation(const double& current_time) {
     for ( auto& animation: animations ) {
         animation->Update( current_time );
     }
 }
 
-Animation* MediaManager::NewAnimation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& delay) {
+Animation* NewAnimation(Texture* t, const int& sz_x, const int& sz_y, const int& n_frames, const double& delay) {
     animations.push_back(new Animation(
             t,
             sz_x,

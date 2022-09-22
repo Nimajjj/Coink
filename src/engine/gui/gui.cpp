@@ -4,15 +4,14 @@
 
 #include "gui/gui.h"
 
-GUI::GUI() :
-    last_mouse_state(0)
-{}
+Uint32 last_mouse_state;
+std::vector<Button*> buttons;
 
-GUI::~GUI() {
-    Close();
+void GuiInit() {
+    last_mouse_state = 0;
 }
 
-void GUI::Close() {
+void GuiClose() {
     for ( auto &button : buttons ) {
         delete button;
         button = nullptr;
@@ -20,9 +19,9 @@ void GUI::Close() {
     buttons.clear();
 }
 
-void GUI::Display(Render* render) {
+void GuiDisplay() {
     for ( const auto &button: buttons ) {
-        render->DrawFillRect(
+        DrawFillRect(
                 button->position.x,
                 button->position.y,
                 button->size.x,
@@ -30,7 +29,7 @@ void GUI::Display(Render* render) {
                 button->bg_color
                 );
 
-        render->DrawRect(
+        DrawRect(
                 button->position.x,
                 button->position.y,
                 button->size.x,
@@ -38,7 +37,7 @@ void GUI::Display(Render* render) {
                 button->outline_color
                 );
 
-        render->Print(
+        ScreenPrint(
                 button->value,
                 button->position.x + (button->font_size / 2),
                 button->position.y,
@@ -47,7 +46,7 @@ void GUI::Display(Render* render) {
     }
 }
 
-void GUI::UpdateButtons() {
+void UpdateButtons() {
     int x, y;
 
     SDL_PumpEvents();
@@ -69,13 +68,27 @@ void GUI::UpdateButtons() {
     }
 }
 
-Button* GUI::ButtonNew(void (*act)(), const std::string& val, const unsigned& ft_size, const int& x, const int& y, const int& w, const int& h) {
-    Button* bt = new Button( act, val, ft_size, x, y, w, h );
+Button* ButtonNew(void (*act)(), const std::string& val, const unsigned& ft_size, const int& x, const int& y, const int& w, const int& h) {
+    int width = w;
+    int height = h;
+    if ( w == 0 || h == 0 ) {
+        SDL_Surface* surface = TTF_RenderText_Solid( GetFont(), val.c_str(), {0xFF,0xFF,0xFF} );
+        double delta = ft_size / 64.0;
+        if ( w == 0 ) {
+            width = surface->w * delta + ft_size;
+        }
+        if (h == 0) {
+            height = surface->h * delta;
+        }
+        SDL_FreeSurface( surface );
+    }
+
+    Button* bt = new Button( act, val, ft_size, x, y, width, height );
     buttons.push_back( bt );
     return bt;
 }
 
-void GUI::ButtonDelete(Button* bt_to_delete) {
+void ButtonDelete(Button* bt_to_delete) {
     unsigned index = -1;
     for ( unsigned i = 0; i < buttons.size(); i++ ) {
         if ( buttons[i] == bt_to_delete ) {

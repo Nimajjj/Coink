@@ -50,7 +50,6 @@ void InitClothSim() {
 }
 
 void UpdateClothSim() {
-    Physics& physics = GetPhysicsSolver();
     int x, y;
     unsigned z = 16;
 
@@ -60,9 +59,9 @@ void UpdateClothSim() {
     if ((mouse_state & SDL_BUTTON_LMASK) != 0) {
         std::vector<int> to_remove;
 
-        for (unsigned i=0; i < physics.GetVerletSticks().size(); i++) {
-            VerletBody& b0 = physics.GetVerletBodies()[physics.GetVerletSticks()[i].b0];
-            VerletBody& b1 = physics.GetVerletBodies()[physics.GetVerletSticks()[i].b1];
+        for (unsigned i=0; i < GetVerletSticks().size(); i++) {
+            VerletBody& b0 = GetVerletBodies()[GetVerletSticks()[i].b0];
+            VerletBody& b1 = GetVerletBodies()[GetVerletSticks()[i].b1];
 
             if (b0.position.x < x + z && b0.position.x > x - z &&
                 b1.position.x < x + z && b1.position.x > x - z &&
@@ -75,8 +74,7 @@ void UpdateClothSim() {
         }
 
         for (int j : to_remove) {
-            physics.GetVerletSticks().erase(physics.GetVerletSticks().begin() + j);
+            GetVerletSticks().erase(GetVerletSticks().begin() + j);
         }
-
     }
 }
