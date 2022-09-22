@@ -25,17 +25,17 @@ In this exemple a window is created and "Hello Coink!" is print in it.
 #include "engine.h"
 
 int main(int argc, char** argv) {
-    Engine engine = {"Coink [DEMO] v0.1.1", 1280, 720, 60};
+    Coink("Coink [DEMO] v0.1.1", 1280, 720);
 
-    while (engine.ShouldNotQuit()) {
-        engine.LoopBegin();
-        
-        engine.Print("Hello Coink!", 0, 0, 32);
+    while (ShouldNotQuit()) {
+        LoopBegin();
 
-        engine.LoopEnd();
+        Print("Hello Coink!", 0, 0, 32);
+
+        LoopEnd();
     }
 
-    engine.Close();
+    Close();
     return 0;
 }
 ```

@@ -2,21 +2,20 @@
 #include "verlet_cloth_sim.h"
 
 int main(int argc, char** argv) {
-    Engine engine = {"Coink [DEMO] v0.1.1", 1280, 720, 60};
-    engine.DebugRenderVerlet();
+    Coink("Coink [DEMO] v0.1.1", 1280, 720);
+    DebugRenderVerlet();
+    DebugShowFPS();
+    InitClothSim();
 
-    InitClothSim(engine);
+    while (ShouldNotQuit()) {
+        LoopBegin();
 
-    while (engine.ShouldNotQuit()) {
-        engine.LoopBegin();
+        UpdateClothSim();
 
-        UpdateClothSim(engine.GetPhysicsSolver());
-        engine.Print("Hello Coink!", 0, 0, 32);
-
-        engine.LoopEnd();
+        LoopEnd();
     }
 
-    engine.Close();
+    Close();
     return 0;
 }
 

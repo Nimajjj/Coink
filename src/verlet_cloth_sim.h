@@ -7,8 +7,8 @@
 #define COINK_VERLET_CLOTH_SIM_H
 #include "engine.h"
 
-void InitClothSim(Engine& engine);
-void UpdateClothSim(Physics& physics);
+void InitClothSim();
+void UpdateClothSim();
 
 
 #endif //COINK_VERLET_CLOTH_SIM_H

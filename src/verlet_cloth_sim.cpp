@@ -4,7 +4,7 @@
 
 #include "verlet_cloth_sim.h"
 
-void InitClothSim(Engine& engine) {
+void InitClothSim() {
     unsigned bodies_count = 0;
     unsigned sticks_count = 0;
 
@@ -25,7 +25,7 @@ void InitClothSim(Engine& engine) {
                 vel = {(double)(rand() % 8), 0};
             }
 
-            bodies[y][x] = engine.NewVerletBody(offset.x + x * spacing, offset.y + y * spacing, vel, pinned);
+            bodies[y][x] = NewVerletBody(offset.x + x * spacing, offset.y + y * spacing, vel, pinned);
 
             bodies_count++;
         }
@@ -34,12 +34,12 @@ void InitClothSim(Engine& engine) {
     for (unsigned y = 0; y < height; y++) {
         for (unsigned x = 0; x < width; x++) {
             if (y < height - 1) {
-                engine.NewVerletStick(bodies[y][x], bodies[y+1][x]);
+                NewVerletStick(bodies[y][x], bodies[y+1][x]);
                 sticks_count++;
             }
 
             if (x < width - 1) {
-                engine.NewVerletStick(bodies[y][x], bodies[y][x+1]);
+                NewVerletStick(bodies[y][x], bodies[y][x+1]);
                 sticks_count++;
             }
         }
@@ -49,7 +49,8 @@ void InitClothSim(Engine& engine) {
     std::cout << "Verlet sticks : " << sticks_count << "\n";
 }
 
-void UpdateClothSim(Physics& physics) {
+void UpdateClothSim() {
+    Physics& physics = GetPhysicsSolver();
     int x, y;
     unsigned z = 16;
 
