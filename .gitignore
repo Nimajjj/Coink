@@ -1,3 +1,4 @@
-/build/
-/include/SDL2.
-/lib/
+build/
+include/SDL2.
+lib/
+.vs/
